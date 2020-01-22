@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 'use strict';
 
 var CLOUD_WIDTH = 420;
@@ -81,9 +80,6 @@ window.renderStatistics = function (ctx, players, times) {
     ctx.fillText(players[i], columnX, nameY);
 
     // координаты для следующей колонки по X
-
-    console.log(columnX);
-
     columnX += BAR_WIDTH + BAR_GAP;
   }
 
