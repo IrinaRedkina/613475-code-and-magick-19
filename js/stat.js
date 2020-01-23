@@ -8,7 +8,6 @@ var GAP = 10;
 var FONT_GAP = 15;
 var BAR_MAX_HEIGHT = 150;
 var BAR_WIDTH = 40;
-var COLOR_TEXT = '#000';
 var BAR_GAP = 50;
 
 // отрисовка окна и тени
@@ -30,9 +29,14 @@ var getMaxElement = function (arr) {
   return maxElement;
 };
 
-// получение случайного числа
-var getIntRand = function (min, max) {
-  return Math.floor(min + Math.random() * (max - min + 1));
+/*
+* получение случайного цвета в hsl
+* min, max - минимальное и максимальное значения насыщенности
+* lightness - яркость
+*/
+var getRandomColor = function (min, max, lightness) {
+  var randomSaturate = Math.floor(min + Math.random() * (max - min + 1));
+  return 'hsl(240, ' + randomSaturate + '%, ' + lightness + '%)';
 };
 
 window.renderStatistics = function (ctx, players, times) {
@@ -46,7 +50,7 @@ window.renderStatistics = function (ctx, players, times) {
   ctx.textBaseline = 'baseline';
 
   // надпись о победе
-  ctx.fillStyle = COLOR_TEXT;
+  ctx.fillStyle = '#000';
   ctx.fillText('Ура вы победили!', CLOUD_X + GAP * 3, CLOUD_Y + GAP * 3);
   ctx.fillText('Список результатов:', CLOUD_X + GAP * 3, CLOUD_Y + GAP * 3 + FONT_GAP);
 
@@ -71,11 +75,11 @@ window.renderStatistics = function (ctx, players, times) {
     var timeY = barY - GAP;
 
     // отрисовка бара
-    ctx.fillStyle = players[i] === 'Вы' ? 'rgba(255, 0, 0, 1)' : 'hsl(240, 100%, ' + getIntRand(20, 90) + '%)';
+    var barBackground = (players[i] === 'Вы') ? 'rgba(255, 0, 0, 1)' : getRandomColor(20, 100, 40);
+    ctx.fillStyle = barBackground;
     ctx.fillRect(columnX, barY, BAR_WIDTH, barHeight);
 
     // отрисовка времени и имени игрока
-    ctx.fillStyle = COLOR_TEXT;
     ctx.fillText(Math.round(times[i]), columnX, timeY);
     ctx.fillText(players[i], columnX, nameY);
 
