@@ -4,6 +4,7 @@ var PERSONAGE_NAMES = ['Иван', 'Хуан Себастьян', 'Мария', 
 var PERSONAGE_SURNAMES = ['да Марья', 'Верон', 'Мирабелла', 'Вальц', 'Онопко', 'Топольницкая', 'Нионго', 'Ирвинг'];
 var PERSONAGE_COAT_COLORS = ['rgb(101, 137, 164)', 'rgb(241, 43, 107)', 'rgb(146, 100, 161)', 'rgb(56, 159, 117)', 'rgb(215, 210, 55)', 'rgb(0, 0, 0)'];
 var PERSONAGE_EYES_COLORS = ['black', 'red', 'blue', 'yellow', 'green'];
+var PERSONAGES_QUANTITY = 4;
 
 var userDialog = document.querySelector('.setup');
 userDialog.classList.remove('hidden');
@@ -14,16 +15,21 @@ var getRandomIndex = function (arr) {
   return Math.floor(Math.random() * arr.length);
 };
 
-var generatePersonages = function (names, surnames, coatColors, eyesColors, quantity) {
+var getRandomElement = function (names, surnames, coatColors, eyesColors) {
+  var element = {};
+
+  element.name = names[getRandomIndex(names)] + ' ' + surnames[getRandomIndex(surnames)];
+  element.coatColor = coatColors[getRandomIndex(coatColors)];
+  element.eyesColor = eyesColors[getRandomIndex(eyesColors)];
+
+  return element;
+};
+
+var generatePersonages = function (quantity) {
   var personages = [];
 
   for (var i = 0; i < quantity; i++) {
-    var personage = {};
-
-    personage.name = names[getRandomIndex(names)] + ' ' + surnames[getRandomIndex(surnames)];
-    personage.coatColor = coatColors[getRandomIndex(coatColors)];
-    personage.eyesColor = eyesColors[getRandomIndex(eyesColors)];
-
+    var personage = getRandomElement(PERSONAGE_NAMES, PERSONAGE_SURNAMES, PERSONAGE_COAT_COLORS, PERSONAGE_EYES_COLORS);
     personages.push(personage);
   }
 
@@ -60,5 +66,5 @@ var renderPersonages = function (personages, selector) {
   }
 };
 
-var personages = generatePersonages(PERSONAGE_NAMES, PERSONAGE_SURNAMES, PERSONAGE_COAT_COLORS, PERSONAGE_EYES_COLORS, 4);
+var personages = generatePersonages(PERSONAGES_QUANTITY);
 renderPersonages(personages, '.setup-similar-list');
