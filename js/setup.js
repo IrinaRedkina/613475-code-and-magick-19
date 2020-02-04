@@ -4,7 +4,7 @@ var PERSONAGE_NAMES = ['Иван', 'Хуан Себастьян', 'Мария', 
 var PERSONAGE_SURNAMES = ['да Марья', 'Верон', 'Мирабелла', 'Вальц', 'Онопко', 'Топольницкая', 'Нионго', 'Ирвинг'];
 var PERSONAGE_COAT_COLORS = ['rgb(101, 137, 164)', 'rgb(241, 43, 107)', 'rgb(146, 100, 161)', 'rgb(56, 159, 117)', 'rgb(215, 210, 55)', 'rgb(0, 0, 0)'];
 var PERSONAGE_EYES_COLORS = ['black', 'red', 'blue', 'yellow', 'green'];
-var FIERBOLL_COLORS = ['#ee4830', '#30a8ee', '#5ce6c0', '#e848d5', '#e6e848'];
+var FIREBOLL_COLORS = ['#ee4830', '#30a8ee', '#5ce6c0', '#e848d5', '#e6e848'];
 var PERSONAGES_QUANTITY = 4;
 
 var ENTER_KEY = 'Enter';
@@ -16,7 +16,7 @@ var setupClose = setup.querySelector('.setup-close');
 
 var userNameInput = setup.querySelector('input[name=username]');
 var setupForm = setup.querySelector('.setup-wizard-form');
-var fierboll = setup.querySelector('.setup-fireball-wrap');
+var fireboll = setup.querySelector('.setup-fireball-wrap');
 var personageEyes = setup.querySelector('.wizard-eyes');
 var personageCoat = setup.querySelector('.wizard-coat');
 
@@ -86,7 +86,7 @@ renderPersonages(personages, '.setup-similar-list');
  * События
  */
 
-var onPopupEscPress = function (evt) {
+var onPopupKeydown = function (evt) {
   if (evt.key === ESC_KEY) {
     closePopup();
   }
@@ -94,12 +94,12 @@ var onPopupEscPress = function (evt) {
 
 var openPopup = function () {
   setup.classList.remove('hidden');
-  document.addEventListener('keydown', onPopupEscPress);
+  document.addEventListener('keydown', onPopupKeydown);
 };
 
 var closePopup = function () {
   setup.classList.add('hidden');
-  document.removeEventListener('keydown', onPopupEscPress);
+  document.removeEventListener('keydown', onPopupKeydown);
 };
 
 setupOpen.addEventListener('click', function () {
@@ -122,12 +122,12 @@ setupClose.addEventListener('keydown', function (evt) {
   }
 });
 
-userNameInput.addEventListener('focus', function () {
-  document.removeEventListener('keydown', onPopupEscPress);
+userNameInput.addEventListener('keydown', function () {
+  document.removeEventListener('keydown', onPopupKeydown);
 });
 
 userNameInput.addEventListener('blur', function () {
-  document.addEventListener('keydown', onPopupEscPress);
+  document.addEventListener('keydown', onPopupKeydown);
 });
 
 
@@ -135,15 +135,15 @@ userNameInput.addEventListener('blur', function () {
  * Настройки персонажа
  */
 
-var setInputValue = function (color, inputName) {
+var setInputValue = function (value, inputName) {
   var input = setupForm.querySelector('input[name=' + inputName + ']');
-  input.setAttribute('value', color);
+  input.setAttribute('value', value);
 };
 
-var onFierbollClick = function () {
-  var fierbollColor = getRandomElement(FIERBOLL_COLORS);
-  setInputValue(fierbollColor, 'fireball-color');
-  fierboll.style.backgroundColor = fierbollColor;
+var onFirebollClick = function () {
+  var firebollColor = getRandomElement(FIREBOLL_COLORS);
+  setInputValue(firebollColor, 'fireball-color');
+  fireboll.style.backgroundColor = firebollColor;
 };
 
 var onPersonageEyesClick = function () {
@@ -158,6 +158,6 @@ var onPersonageCoatClick = function () {
   personageCoat.style.fill = coatColor;
 };
 
-fierboll.addEventListener('click', onFierbollClick);
+fireboll.addEventListener('click', onFirebollClick);
 personageEyes.addEventListener('click', onPersonageEyesClick);
 personageCoat.addEventListener('click', onPersonageCoatClick);
