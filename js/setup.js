@@ -4,23 +4,35 @@ var PERSONAGE_NAMES = ['Иван', 'Хуан Себастьян', 'Мария', 
 var PERSONAGE_SURNAMES = ['да Марья', 'Верон', 'Мирабелла', 'Вальц', 'Онопко', 'Топольницкая', 'Нионго', 'Ирвинг'];
 var PERSONAGE_COAT_COLORS = ['rgb(101, 137, 164)', 'rgb(241, 43, 107)', 'rgb(146, 100, 161)', 'rgb(56, 159, 117)', 'rgb(215, 210, 55)', 'rgb(0, 0, 0)'];
 var PERSONAGE_EYES_COLORS = ['black', 'red', 'blue', 'yellow', 'green'];
+var FIREBOLL_COLORS = ['#ee4830', '#30a8ee', '#5ce6c0', '#e848d5', '#e6e848'];
 var PERSONAGES_QUANTITY = 4;
 
-var userDialog = document.querySelector('.setup');
-userDialog.classList.remove('hidden');
+var ENTER_KEY = 'Enter';
+var ESC_KEY = 'Escape';
+
+var setup = document.querySelector('.setup');
+var setupOpen = document.querySelector('.setup-open');
+var setupClose = setup.querySelector('.setup-close');
+
+var userNameInput = setup.querySelector('input[name=username]');
+var setupForm = setup.querySelector('.setup-wizard-form');
+var fireboll = setup.querySelector('.setup-fireball-wrap');
+var personageEyes = setup.querySelector('.wizard-eyes');
+var personageCoat = setup.querySelector('.wizard-coat');
 
 var similarPersonageTemplate = document.querySelector('#similar-wizard-template').content.querySelector('.setup-similar-item');
 
-var getRandomIndex = function (arr) {
-  return Math.floor(Math.random() * arr.length);
+var getRandomElement = function (arr) {
+  var index = Math.floor(Math.random() * arr.length);
+  return arr[index];
 };
 
-var getRandomElement = function (names, surnames, coatColors, eyesColors) {
+var generatePersonage = function (names, surnames, coatColors, eyesColors) {
   var element = {};
 
-  element.name = names[getRandomIndex(names)] + ' ' + surnames[getRandomIndex(surnames)];
-  element.coatColor = coatColors[getRandomIndex(coatColors)];
-  element.eyesColor = eyesColors[getRandomIndex(eyesColors)];
+  element.name = getRandomElement(names) + ' ' + getRandomElement(surnames);
+  element.coatColor = getRandomElement(coatColors);
+  element.eyesColor = getRandomElement(eyesColors);
 
   return element;
 };
@@ -29,7 +41,7 @@ var generatePersonages = function (quantity) {
   var personages = [];
 
   for (var i = 0; i < quantity; i++) {
-    var personage = getRandomElement(PERSONAGE_NAMES, PERSONAGE_SURNAMES, PERSONAGE_COAT_COLORS, PERSONAGE_EYES_COLORS);
+    var personage = generatePersonage(PERSONAGE_NAMES, PERSONAGE_SURNAMES, PERSONAGE_COAT_COLORS, PERSONAGE_EYES_COLORS);
     personages.push(personage);
   }
 
@@ -68,3 +80,84 @@ var renderPersonages = function (personages, selector) {
 
 var personages = generatePersonages(PERSONAGES_QUANTITY);
 renderPersonages(personages, '.setup-similar-list');
+
+
+/*
+ * События
+ */
+
+var onPopupKeydown = function (evt) {
+  if (evt.key === ESC_KEY) {
+    closePopup();
+  }
+};
+
+var openPopup = function () {
+  setup.classList.remove('hidden');
+  document.addEventListener('keydown', onPopupKeydown);
+};
+
+var closePopup = function () {
+  setup.classList.add('hidden');
+  document.removeEventListener('keydown', onPopupKeydown);
+};
+
+setupOpen.addEventListener('click', function () {
+  openPopup();
+});
+
+setupOpen.addEventListener('keydown', function (evt) {
+  if (evt.key === ENTER_KEY) {
+    openPopup();
+  }
+});
+
+setupClose.addEventListener('click', function () {
+  closePopup();
+});
+
+setupClose.addEventListener('keydown', function (evt) {
+  if (evt.key === ENTER_KEY) {
+    closePopup();
+  }
+});
+
+userNameInput.addEventListener('keydown', function () {
+  document.removeEventListener('keydown', onPopupKeydown);
+});
+
+userNameInput.addEventListener('blur', function () {
+  document.addEventListener('keydown', onPopupKeydown);
+});
+
+
+/*
+ * Настройки персонажа
+ */
+
+var setInputValue = function (value, inputName) {
+  var input = setupForm.querySelector('input[name=' + inputName + ']');
+  input.setAttribute('value', value);
+};
+
+var onFirebollClick = function () {
+  var firebollColor = getRandomElement(FIREBOLL_COLORS);
+  setInputValue(firebollColor, 'fireball-color');
+  fireboll.style.backgroundColor = firebollColor;
+};
+
+var onPersonageEyesClick = function () {
+  var eyesColor = getRandomElement(PERSONAGE_EYES_COLORS);
+  setInputValue(eyesColor, 'eyes-color');
+  personageEyes.style.fill = eyesColor;
+};
+
+var onPersonageCoatClick = function () {
+  var coatColor = getRandomElement(PERSONAGE_COAT_COLORS);
+  setInputValue(coatColor, 'coat-color');
+  personageCoat.style.fill = coatColor;
+};
+
+fireboll.addEventListener('click', onFirebollClick);
+personageEyes.addEventListener('click', onPersonageEyesClick);
+personageCoat.addEventListener('click', onPersonageCoatClick);
