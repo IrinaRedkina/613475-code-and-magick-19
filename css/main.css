@@ -927,6 +927,50 @@ input[type=radio]:checked + .review-mark-label
     opacity: .3;
 }
 
+.status-submit
+{
+  font-size: 12px;
+  color: #fff;
+  padding: 10px 15px;
+  max-width: 300px;
+  margin: 10px auto 0;
+  position: relative;
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, .15);
+}
+
+.status-submit::after
+{
+  content: "";
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+}
+
+.status-submit.error
+{
+  background-color: #a60000;
+}
+
+.status-submit.error::after
+{
+  border-bottom: 10px solid #a60000;
+}
+
+.status-submit.success
+{
+  background-color: #179741;
+}
+
+.status-submit.success::after
+{
+  border-bottom: 10px solid #179741;
+}
+
 .overlay-gallery
 {
     text-align: center;
