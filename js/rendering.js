@@ -3,10 +3,7 @@
 (function () {
   var PERSONAGES_QUANTITY = 4;
 
-  var similarPersonageMessageError = 'Не удалось загрузить похожих персонажей.';
   var similarPersonageTemplate = document.querySelector('#similar-wizard-template').content.querySelector('.setup-similar-item');
-  var similarListElementSelector = '.setup-similar-list';
-  var setupFooter = document.querySelector('.setup-footer');
 
   var createPersonageElement = function (personage) {
     var element = similarPersonageTemplate.cloneNode(true);
@@ -18,14 +15,17 @@
     return element;
   };
 
+
   /*
    * Рендер персонажей
    * @param {array} personages, массив с персонажами
    * @param {string} selector, css селектор элемента, в который добавляем персонажей
    */
-  var renderPersonages = function (personages, selector) {
+  var renderPersonages = function (personages) {
     var fragment = document.createDocumentFragment();
-    var element = document.querySelector(selector);
+    var element = document.querySelector('.setup-similar-list');
+
+    element.innerHTML = '';
 
     for (var i = 0; i < PERSONAGES_QUANTITY; i++) {
       fragment.appendChild(createPersonageElement(personages[i]));
@@ -38,17 +38,8 @@
     }
   };
 
-  var onSuccess = function (personages) {
-    renderPersonages(personages, similarListElementSelector);
+  window.rendering = {
+    personages: renderPersonages
   };
-
-  var onError = function (error) {
-    var errorMessage = document.createElement('div');
-    errorMessage.style = 'margin: 15px 0; font-size: 12px; color: rgba(255,255,255,.8); padding-left: 20px;';
-    errorMessage.innerText = similarPersonageMessageError + ' ' + error;
-    setupFooter.insertBefore(errorMessage, setupFooter.firstChild);
-  };
-
-  window.backend.load(onSuccess, onError);
 
 })();

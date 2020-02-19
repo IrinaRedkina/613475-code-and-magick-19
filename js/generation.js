@@ -10,16 +10,17 @@
 
   var PERSONAGES_QUANTITY = 4;
 
+  var Personage = function (personagesInfo) {
+    this.name = window.util.getRandomElement(personagesInfo.NAMES) + ' ' + window.util.getRandomElement(personagesInfo.SURNAMES);
+    this.colorCoat = window.util.getRandomElement(personagesInfo.COAT_COLORS);
+    this.colorEyes = window.util.getRandomElement(personagesInfo.EYES_COLORS);
+  };
+
   var generatePersonages = function (quantity, personagesInfo) {
     var personages = [];
 
     for (var i = 0; i < quantity; i++) {
-      var personage = {};
-
-      personage.name = window.util.getRandomElement(personagesInfo.NAMES) + ' ' + window.util.getRandomElement(personagesInfo.SURNAMES);
-      personage.coatColor = window.util.getRandomElement(personagesInfo.COAT_COLORS);
-      personage.eyesColor = window.util.getRandomElement(personagesInfo.EYES_COLORS);
-
+      var personage = new Personage(personagesInfo);
       personages.push(personage);
     }
 
