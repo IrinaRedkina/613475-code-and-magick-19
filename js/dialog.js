@@ -7,14 +7,15 @@
   var userNameInput = setup.querySelector('input[name=username]');
   var dialogDragger = setup.querySelector('.upload');
 
+  var Coords = function (x, y) {
+    this.x = x;
+    this.y = y;
+  };
+
   var onDialogDraggerMousedown = function (evt) {
     evt.preventDefault();
 
-    var startCoords = {
-      x: evt.clientX,
-      y: evt.clientY
-    };
-
+    var startCoords = new Coords(evt.clientX, evt.clientY);
     var isDragged = false;
 
     var onDocumentMousemove = function (moveEvt) {
@@ -26,11 +27,7 @@
         y: startCoords.y - moveEvt.clientY
       };
 
-      startCoords = {
-        x: moveEvt.clientX,
-        y: moveEvt.clientY
-      };
-
+      startCoords = new Coords(moveEvt.clientX, moveEvt.clientY);
       setup.style.top = (setup.offsetTop - shift.y) + 'px';
       setup.style.left = (setup.offsetLeft - shift.x) + 'px';
     };
