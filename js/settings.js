@@ -8,6 +8,8 @@
   var submitButton = settingsForm.querySelector('.setup-submit');
   var setupFooter = setupPlayer.querySelector('.setup-footer');
   var statusSubmitTemplate = document.querySelector('#status-submit-template').content.querySelector('.status-submit');
+  var playerAvatarForm = setupPlayer.querySelector('.setup-user-pic');
+  var playerAvatar = document.querySelector('.setup-open-icon');
 
   var renderSubmitMessage = function (messageClass, messageText, hiddenSecond) {
     var statusSubmitElement = statusSubmitTemplate.cloneNode(true);
@@ -41,5 +43,22 @@
     window.backend.save(formData, onSuccess, onError);
     evt.preventDefault();
   });
+
+  var onAvatarInputChange = function (evt) {
+    var file = evt.target.files[0];
+
+    if (file) {
+      var reader = new FileReader();
+      reader.onload = function (readerEvt) {
+        playerAvatarForm.setAttribute('src', readerEvt.target.result);
+        playerAvatar.setAttribute('src', readerEvt.target.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  window.settings = {
+    onAvatarChange: onAvatarInputChange
+  };
 
 })();

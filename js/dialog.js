@@ -6,6 +6,7 @@
   var setupClose = setup.querySelector('.setup-close');
   var userNameInput = setup.querySelector('input[name=username]');
   var dialogDragger = setup.querySelector('.upload');
+  var avatarInput = setup.querySelector('input[name=avatar]');
 
   var Coords = function (x, y) {
     this.x = x;
@@ -60,6 +61,7 @@
     setup.classList.remove('hidden');
     document.addEventListener('keydown', onDialogKeydown);
     dialogDragger.addEventListener('mousedown', onDialogDraggerMousedown);
+    avatarInput.addEventListener('change', window.settings.onAvatarChange);
   };
 
   var closeDialog = function () {
@@ -67,6 +69,7 @@
     setup.removeAttribute('style');
     document.removeEventListener('keydown', onDialogKeydown);
     dialogDragger.removeEventListener('mousedown', onDialogDraggerMousedown);
+    avatarInput.removeEventListener('change', window.settings.onAvatarChange);
   };
 
   userNameInput.addEventListener('keydown', function () {
